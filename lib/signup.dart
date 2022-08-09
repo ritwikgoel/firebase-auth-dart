@@ -1,61 +1,21 @@
-// ignore_for_file: sort_child_properties_last
-
-import 'dart:ui';
-import 'package:app/signup.dart';
+import 'package:app/loggedin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'loggedin.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
+import 'main.dart';
+
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
+
+  @override
+  State<SignUp> createState() => _SignUpState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-  routes: {
-    
-    // When navigating to the "/second" route, build the SecondScreen widget.
-    '/signup': (context) => const SignUp(),
-  },
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    GoogleSignIn _googlesignin = GoogleSignIn(scopes: ['email']);
-    GoogleSignInAccount? user = _googlesignin.currentUser;
-    var emailcontroller = TextEditingController();
-    var passcontroller = TextEditingController();
-    Future signIn() async {
-      if (RegExp(
-              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-          .hasMatch(emailcontroller.text.trim())) {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: emailcontroller.text.trim(),
-            password: passcontroller.text.trim());
-      }
-    }
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -77,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Sign In",
+                        child: Text("Sign Up",
                             style: TextStyle(
                                 fontSize: 60,
                                 color: Color.fromARGB(255, 113, 113, 113)))),
@@ -87,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                     const Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Sign in with your username or email",
+                          "Sign up with your username or email",
                           style: TextStyle(
                               color: Color.fromARGB(255, 113, 113, 113)),
                         )),
@@ -100,14 +60,13 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           children: [
                             TextField(
-                              controller: emailcontroller,
+                             
                               cursorColor: Colors.white,
                               decoration:
                                   const InputDecoration(labelText: '  Email'),
                             ),
                             TextField(
                               obscureText: true,
-                              controller: passcontroller,
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
                                 labelText: '  Password',
@@ -127,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        signIn();
+                        //signIn();
                       },
                       child: const Text("Sign In"),
                       style: ElevatedButton.styleFrom(
@@ -180,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             label: Text('Google',style: TextStyle(color: Colors.black),),
                             onPressed: () async {
-                              await _googlesignin.signIn();
+                             
                               MaterialPageRoute(builder: (context) => LoggedIn());
                               setState(() {});
                             },
@@ -196,7 +155,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                             label: Text('Facebook',style: TextStyle(color: Colors.black),),
                             onPressed: () async {
-                              await _googlesignin.signIn();
                               MaterialPageRoute(builder: (context) => LoggedIn());
                               setState(() {});
                             },
